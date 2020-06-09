@@ -71,7 +71,7 @@ module.exports = app => {
         storage: storage
     })
 
-    app.post('/admin/api/upload', upload.single('file'), async (req, res) => {
+    app.post('/admin/api/uploads', upload.single('file'), async (req, res) => {
         const file = req.file
         file.url = `http://localhost:3000/uploads/${file.filename}`
         // res.set('Content-Type','application/json; charset=utf-8');

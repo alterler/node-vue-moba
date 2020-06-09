@@ -16,9 +16,9 @@
           <el-form-item label="头像">
             <el-upload
               class="avatar-uploader"
-              :action="$http.defaults.baseURL+'/upload'"
+              :action="$http.defaults.baseURL+'/uploads'"
               :show-file-list="false"
-              :on-success="afterUpload"
+              :on-success="res => model.avatar=res.url"
             >
               <img v-if="model.avatar" :src="model.avatar" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -28,9 +28,9 @@
           <el-form-item label="banner">
             <el-upload
               class="avatar-uploader"
-              :action="$http.defaults.baseURL+'/upload'"
+              :action="$http.defaults.baseURL+'/uploads'"
               :show-file-list="false"
-              :on-success="afterBanner"
+              :on-success="res => model.banner=res.url"
             >
               <img v-if="model.banner" :src="model.banner" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -102,7 +102,7 @@
               <el-form-item label="图标">
                 <el-upload
                   class="avatar-uploader"
-                  :action="$http.defaults.baseURL+'/upload'"
+                  :action="$http.defaults.baseURL+'/uploads'"
                   :show-file-list="false"
                   :on-success="res =>  $set(item, 'icon', res.url)"
                 >
@@ -176,6 +176,7 @@ export default {
       model: {
         name: "",
         avatar: "",
+        banner: "",
         scores: {
           difficult: 0,
           skills: 0,
@@ -216,26 +217,7 @@ export default {
     async fetchHeroes() {
       const res = await this.$http.get(`/rest/heroes`);
       this.heroes = res.data;
-    },
-    async afterUpload(res, file) {
-      // this.$set(this.model,'avator',res.url)URL.createObjectURL(file.raw);
-      this.model.avatar = URL.createObjectURL(file.raw);
-      // this.model.avatar = file.response;
-      // console.log(res)
-      // console.log(file)
-      // console.log(URL.createObjectURL(file.raw))
-    },
-    async afterBanner(res, file) {
-      // this.$set(this.model,'avator',res.url)URL.createObjectURL(file.raw);
-      this.model.banner = URL.createObjectURL(file.raw);
-      // console.log(res)
     }
-    // async afterIcon(res, file) {
-    //   this.model.skills.push({
-    //     icon: URL.createObjectURL(file.raw)
-    //   });
-    //   // console.log(arguments);
-    // }
   },
   created() {
     this.id && this.fetch();

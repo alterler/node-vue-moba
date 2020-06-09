@@ -10,10 +10,10 @@
       <el-form-item label="图标">
         <el-upload
           class="avatar-uploader"
-          :action="$http.defaults.baseURL+'/upload'"
-          :headers='getAuthHeaders()'
+          :action="$http.defaults.baseURL+'/uploads'"
+          :headers="getAuthHeaders()"
           :show-file-list="false"
-          :on-success="afterUpload"
+          :on-success="res => model.icon=res.url"
         >
           <img v-if="model.icon" :src="model.icon" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -56,11 +56,6 @@ export default {
     async fetch() {
       const res = await this.$http.get(`/rest/items/${this.id}`);
       this.model = res.data;
-    },
-    async afterUpload(res,file) {
-      // this.$set(this.model,'icon',res.url)
-        this.model.icon = URL.createObjectURL(file.raw);
-      // console.log(res)
     }
   },
   created() {

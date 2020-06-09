@@ -59,15 +59,17 @@
           </div>
           <div class="skills bg-white mt-4">
             <div class="d-flex jc-around">
-              <img
-                class="icon"
-                @click="currentSkillIndex = i"
-                :class="{active: currentSkillIndex === i}"
-                :src="item.icon"
-                v-for="(item, i) in model.skills"
-                :key="item.name"
-              />
+              <div v-for="(item, i) in model.skills" :key="item.name">
+                <img
+                  class="icon pt-4"
+                  @click="currentSkillIndex = i"
+                  :class="{active: currentSkillIndex === i}"
+                  :src="item.icon"
+                />
+                <p>{{item.name}}</p>
+              </div>
             </div>
+
             <!-- <div v-if="currentSkill">
               <div class="d-flex pt-4 pb-3">
                 <h3 class="m-0">{{currentSkill.name}}</h3>
@@ -157,4 +159,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  width: 5rem;
+}
 </style>

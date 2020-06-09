@@ -11,7 +11,7 @@ app.use(require('cors')())
 app.use(express.json())
 
 // 静态资源托管
-app.use(express.static(path.join(__dirname, '/uploads/')))
+app.use('/uploads',express.static(path.join(__dirname, '/uploads/')))
 // console.log(path.join(__dirname, 'uploads/'))
 // 连接数据库
 require('./plugins/db')(app)
