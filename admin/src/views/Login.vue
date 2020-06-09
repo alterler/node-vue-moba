@@ -32,6 +32,7 @@ export default {
         type: "success",
         message: "登录成功"
       });
+      localStorage.username = this.model.username;
     }
   }
 };

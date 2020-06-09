@@ -25,8 +25,17 @@
             </el-upload>
           </el-form-item>
           <!-- 背景图 -->
-           <el-form-item label="banner">
-            <el-input v-model="model.banner"></el-input>
+          <el-form-item label="banner">
+            <el-upload
+              class="avatar-uploader"
+              :action="$http.defaults.baseURL+'/upload'"
+              :show-file-list="false"
+              :on-success="afterBanner"
+            >
+              <img v-if="model.banner" :src="model.banner" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <!-- <el-input v-model="model.banner"></el-input> -->
           </el-form-item>
           <!-- 英雄职业 -->
           <el-form-item label="职业">
@@ -73,7 +82,7 @@
           </el-form-item>
           <!-- 对抗技巧 -->
           <el-form-item label="对抗技巧">
-            <el-input type="textarea" v-model="model.battleTipss"></el-input>
+            <el-input type="textarea" v-model="model.battleTips"></el-input>
           </el-form-item>
           <!-- 团战思路 -->
           <el-form-item label="团战思路">
@@ -87,7 +96,7 @@
           </el-button>
           <el-row type="flex" style="flex-wrap:wrap;">
             <el-col :md="12" v-for="(item,index) of model.skills" :key="index">
-              <el-form-item  label="名称">
+              <el-form-item label="名称">
                 <el-input v-model="item.name"></el-input>
               </el-form-item>
               <el-form-item label="图标">
@@ -95,20 +104,52 @@
                   class="avatar-uploader"
                   :action="$http.defaults.baseURL+'/upload'"
                   :show-file-list="false"
-                  :on-success="res => $set(item,'icon',res.url)"
+                  :on-success="res =>  $set(item, 'icon', res.url)"
                 >
                   <img v-if="item.icon" :src="item.icon" class="avatar" />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-form-item>
-              <el-form-item  label="描述">
-                <el-input v-model="item.description" type='textarea'></el-input>
+              <el-form-item label="冷却">
+                <el-input v-model="item.delay"></el-input>
               </el-form-item>
-              <el-form-item  label="小提示">
-                <el-input v-model="item.tips" type='textarea'></el-input>
+              <el-form-item label="消耗">
+                <el-input v-model="item.cost"></el-input>
+              </el-form-item>
+              <el-form-item label="描述">
+                <el-input v-model="item.description" type="textarea"></el-input>
+              </el-form-item>
+              <el-form-item label="小提示">
+                <el-input v-model="item.tips" type="textarea"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="danger" @click="model.skills.splice(index,1)">删除</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="搭档" name="partners">
+          <el-button @click="model.partners.push({})">
+            <i class="el-icon-plus"></i>
+            添加搭档
+          </el-button>
+          <el-row type="flex" style="flex-wrap:wrap;">
+            <el-col :md="12" v-for="(item,index) of model.partners" :key="index">
+              <el-form-item label="选择英雄">
+                <el-select filterable v-model="item.hero">
+                  <el-option
+                    v-for="hero in heroes"
+                    :key="hero._id"
+                    :value="hero._id"
+                    :label="hero.name"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="描述">
+                <el-input v-model="item.description" type="textarea"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="danger" @click="model.partners.splice(index,1)">删除</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -141,8 +182,10 @@ export default {
           attack: 0,
           survive: 0
         },
-        skills: []
-      }
+        skills: [],
+        partners: []
+      },
+      heroes: []
     };
   },
   methods: {
@@ -170,16 +213,35 @@ export default {
       const res = await this.$http.get(`/rest/items`);
       this.items = res.data;
     },
-    async afterUpload(res) {
-      // this.$set(this.model,'avator',res.url)
-      this.model.avatar = res.url;
+    async fetchHeroes() {
+      const res = await this.$http.get(`/rest/heroes`);
+      this.heroes = res.data;
+    },
+    async afterUpload(res, file) {
+      // this.$set(this.model,'avator',res.url)URL.createObjectURL(file.raw);
+      this.model.avatar = URL.createObjectURL(file.raw);
+      // this.model.avatar = file.response;
+      // console.log(res)
+      // console.log(file)
+      // console.log(URL.createObjectURL(file.raw))
+    },
+    async afterBanner(res, file) {
+      // this.$set(this.model,'avator',res.url)URL.createObjectURL(file.raw);
+      this.model.banner = URL.createObjectURL(file.raw);
       // console.log(res)
     }
+    // async afterIcon(res, file) {
+    //   this.model.skills.push({
+    //     icon: URL.createObjectURL(file.raw)
+    //   });
+    //   // console.log(arguments);
+    // }
   },
   created() {
     this.id && this.fetch();
     this.fetchCategories();
     this.fetchItems();
+    this.fetchHeroes();
   }
 };
 </script>

@@ -38,12 +38,18 @@ const schema = new mongoose.Schema({
         name: {
             type: String
         },
+        delay: {
+            type: String
+        },
+        cost: {
+            type: String
+        },
         description: {
             type: String
         },
         tips: {
             type: String
-        }
+        },
     }],
     items1: [{
         type: mongoose.SchemaTypes.ObjectId,
@@ -62,7 +68,7 @@ const schema = new mongoose.Schema({
     teamTips: {
         type: String
     },
-    partner: [{
+    partners: [{
         hero: {
             type: mongoose.SchemaTypes.ObjectId,
             ref: 'Hero'

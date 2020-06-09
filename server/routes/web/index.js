@@ -6,6 +6,7 @@ module.exports = app => {
     const Article = require('../../model/Article')
     const Hero = require('../../model/Hero')
     const Category = require('../../model/Category')
+    const Item = require('../../model/Item')
 
     router.get('/news/init', async (req, res) => {
         const parent = await Category.findOne({
@@ -461,7 +462,7 @@ module.exports = app => {
         // const hero = await Hero.findById(req.params.id)
         // console.log(hero)
         // res.send(hero)
-        const hero = await Hero.findById(req.params.id).populate('categories').lean()
+        const hero = await Hero.findById(req.params.id).populate('categories items1 items2 partners.hero').lean()
         res.send(hero)
     })
     router.get('/article/:id', async (req, res) => {

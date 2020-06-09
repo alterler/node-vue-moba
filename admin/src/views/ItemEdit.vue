@@ -57,9 +57,9 @@ export default {
       const res = await this.$http.get(`/rest/items/${this.id}`);
       this.model = res.data;
     },
-    async afterUpload(res) {
+    async afterUpload(res,file) {
       // this.$set(this.model,'icon',res.url)
-      this.model.icon = res.url;
+        this.model.icon = URL.createObjectURL(file.raw);
       // console.log(res)
     }
   },

@@ -4,7 +4,7 @@
       <div class="card-header d-flex py-2">
         <i class="iconfont icon-Menu"></i>
         <div class="fs-xl flex-1 px-2">{{title}}</div>
-        <i class="iconfont" :class="`icon-${icon}`"></i>
+        <i class="iconfont" v-if="!plain" :class="`icon-${icon}`"></i>
       </div>
       <div class="card-body pt-3">
         <slot></slot>
@@ -23,6 +23,9 @@ export default {
     icon: {
       type: String,
       required: true
+    },
+    plain: {
+      type: Boolean
     }
   }
 };

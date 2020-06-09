@@ -1,7 +1,7 @@
 <template >
   <el-container style="height: 100vh; ">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu router :default-openeds="['3']" unique-opened :default-active="$route.path">
+      <el-menu router :default-openeds="['1']" unique-opened :default-active="$route.path">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-message"></i>内容管理
@@ -61,12 +61,11 @@
         <el-dropdown>
           <i class="el-icon-setting" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
             <el-dropdown-item>新增</el-dropdown-item>
             <el-dropdown-item>删除</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>王小虎</span>
+        <span @click="loginout">{{username}}</span>
       </el-header>
 
       <el-main>
@@ -91,14 +90,27 @@
 <script>
 export default {
   data() {
-    const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄"
-    };
+    // const item = {
+    //   date: "2016-05-02",
+    //   name: "王小虎",
+    //   address: "上海市普陀区金沙江路 1518 弄"
+    // };
     return {
-      tableData: Array(20).fill(item)
+      // tableData: Array(20).fill(item),
+      username: ""
     };
+  },
+  methods: {
+    loginout() {
+      console.log("123");
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      // localStorage.username = "";
+      this.$router.push("/login");
+    }
+  },
+  created() {
+    this.username = localStorage.username || "还未登录";
   }
 };
 </script>
